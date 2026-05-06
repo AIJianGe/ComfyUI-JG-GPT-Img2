@@ -1,0 +1,14 @@
+
+{
+  "baidu_translate": {
+    "APP_ID": "你的百度翻译API APP_ID",
+    "SECRET_KEY": "你的百度翻译API SECRET_KEY",
+    "timeout": 10
+  },
+  "prompt_optimize": {
+    "api_key": "你的GPT提示词优化API密钥",
+    "base_url": "https://api.bltcy.ai",
+    "model": "gpt-4o-mini",
+    "timeout": 30
+  }
+}
