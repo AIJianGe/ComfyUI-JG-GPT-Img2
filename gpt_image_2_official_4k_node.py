@@ -106,9 +106,25 @@ class JiangeGPTImage2Official4KNode:
                 "🖼️ 参考图2": ("IMAGE",),
                 "🖼️ 参考图3": ("IMAGE",),
                 "🖼️ 参考图4": ("IMAGE",),
+                "🖼️ 参考图5": ("IMAGE",),
+                "🖼️ 参考图6": ("IMAGE",),
+                "🖼️ 参考图7": ("IMAGE",),
+                "🖼️ 参考图8": ("IMAGE",),
+                "🖼️ 参考图9": ("IMAGE",),
+                "🖼️ 参考图10": ("IMAGE",),
+                "🖼️ 参考图11": ("IMAGE",),
+                "🖼️ 参考图12": ("IMAGE",),
+                "🖼️ 参考图13": ("IMAGE",),
+                "🖼️ 参考图14": ("IMAGE",),
+                "🖼️ 参考图15": ("IMAGE",),
+                "🖼️ 参考图16": ("IMAGE",),
+                "🖼️ 参考图17": ("IMAGE",),
+                "🖼️ 参考图18": ("IMAGE",),
+                "🖼️ 参考图19": ("IMAGE",),
+                "🖼️ 参考图20": ("IMAGE",),
                 "🎭 遮罩": ("MASK",),
                 "🔑 API密钥": ("STRING", {"default": "", "multiline": False}),
-                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 4}),
+                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
                 "🖼️ 图片数量": ("INT", {"default": 1, "min": 1, "max": 10}),
                 "🎨 画质": (["auto", "high", "medium", "low"], {"default": "auto"}),
                 "🌈 背景": (["auto", "opaque"], {"default": "auto"}),
@@ -199,7 +215,7 @@ class JiangeGPTImage2Official4KNode:
 
     def _build_multipart(self, prompt, images, mask, n, quality, size, background, output_format, output_compression, moderation, seed):
         if mask is not None and not images:
-            raise Exception("使用遮罩时必须提供至少一张图像")
+            raise Exception("使用遮罩时必须提供至少一张参考图")
         image_files = []
         for image_tensor in images:
             batch_size = image_tensor.shape[0]
@@ -217,10 +233,10 @@ class JiangeGPTImage2Official4KNode:
         request_files = [("image", file_tuple) for file_tuple in image_files]
         if mask is not None:
             if len(image_files) != 1:
-                raise Exception("遮罩仅支持单张输入图像")
+                raise Exception("遮罩仅支持单张输入参考图")
             first_img = images[0]
             if mask.shape[1:] != first_img.shape[1:-1]:
-                raise Exception("遮罩与图像尺寸必须一致")
+                raise Exception("遮罩与参考图尺寸必须一致")
             _batch, height, width = mask.shape
             rgba_mask = torch.zeros(height, width, 4, device="cpu")
             rgba_mask[:, :, 3] = 1 - mask.squeeze().cpu()
