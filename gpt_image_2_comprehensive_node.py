@@ -56,7 +56,6 @@ class JiangeGPTImage2ComprehensiveNode:
                 }),
                 "📝 提示词": ("STRING", {"multiline": True, "default": ""}),
                 "🔑 API密钥": ("STRING", {"default": "", "multiline": False}),
-                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
                 "🤖 模型": (["gpt-image-2"], {"default": "gpt-image-2"}),
                 "🎨 画质": (["auto", "high", "medium", "low"], {"default": "auto"}),
                 "📐 尺寸": ([
@@ -67,9 +66,9 @@ class JiangeGPTImage2ComprehensiveNode:
                     "1248x832", "832x1248",
                     "1120x896", "896x1120",
                     "1456x624", "624x1456",
+                    "1920x1088", "1088x1920",
                     "2048x1024", "1024x2048",
                     "2048x2048",
-                    "1920x1080", "1080x1920",
                     "2560x1440", "1440x2560",
                     "2304x1728", "1728x2304",
                     "2496x1664", "1664x2496",
@@ -85,6 +84,7 @@ class JiangeGPTImage2ComprehensiveNode:
                 "🎲 种子": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": "randomize"}),
                 "🧹 清空对话": ("BOOLEAN", {"default": True}),
                 "⏱️ 图片下载超时": ("INT", {"default": 600, "min": 60, "max": 1200, "step": 10}),
+                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
             },
             "optional": {
                 "🔗 自定义API地址": ("STRING", {"default": "", "placeholder": "当 API线路 选 ip 时填写完整地址"}),
@@ -237,14 +237,11 @@ class JiangeGPTImage2ComprehensiveNode:
         custom_api_url = kwargs.get("🔗 自定义API地址", "")
         input_images = [kwargs.get(f"🖼️ 参考图{i}") for i in range(1, ref_count + 1)]
 
-        blank_img = Image.new("RGB", (1024, 1024), color="white")
-        blank_tensor = pil2tensor(blank_img)
-
         if clear_chats:
             JiangeGPTImage2ComprehensiveNode._conversation_history = []
 
         if not api_key.strip():
-            return (blank_tensor, "API密钥为空，请填写后再试", "", self._format_conversation_history())
+            raise Exception("API密钥为空，请填写后再试")
 
         try:
             base_url = self._get_base_url(api_source, custom_api_url)
@@ -326,16 +323,13 @@ class JiangeGPTImage2ComprehensiveNode:
                 return (first_image, response_info, image_urls_string, chat_history)
 
             pbar.update_absolute(100)
-            return (blank_tensor, response_info, image_urls_string, chat_history)
+            raise Exception(f"未能解析到图片数据\n{response_info}")
 
         except Exception as e:
             error_message = f"执行失败: {str(e)}"
             print(f"[GPT-Image-2] {error_message}")
             JiangeGPTImage2ComprehensiveNode._conversation_history.append({"user": prompt, "ai": error_message})
-            first_image = next((img for img in input_images if img is not None), None)
-            if first_image is not None:
-                return (first_image, error_message, "", self._format_conversation_history())
-            return (blank_tensor, error_message, "", self._format_conversation_history())
+            raise
 
 
 NODE_CLASS_MAPPINGS = {

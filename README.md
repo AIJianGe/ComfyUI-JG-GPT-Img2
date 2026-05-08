@@ -91,8 +91,8 @@
 
 ### API 线路选择
 
-- **柏拉图** - 默认推荐
-- **zhenzhen** - 备用线路
+- **柏拉图** - 默认推荐 [注册链接](https://api.bltcy.ai/register?aff=XrFH127761)
+- **zhenzhen** - 备用线路 [注册链接](https://ai.t8star.cn/register?aff=kMY0128604)
 - **hk** - 香港线路
 - **us** - 美国线路
 - **ip** - 自定义地址（需要在"自定义API地址"字段填写）

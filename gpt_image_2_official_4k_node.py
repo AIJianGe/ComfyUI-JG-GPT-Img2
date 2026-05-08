@@ -379,17 +379,16 @@ class JiangeGPTImage2Official4KNode:
         if api_key.strip():
             self.api_key = api_key.strip()
 
-        blank_tensor = self._blank_tensor()
         if not self.api_key:
-            return (blank_tensor, "", "API密钥为空，请填写后再试")
+            raise Exception("API密钥为空，请填写后再试")
 
         size, size_error = self._get_size_from_params(aspect_ratio, resolution)
         if size_error:
-            return (blank_tensor, "", size_error)
+            raise Exception(size_error)
 
         valid, error_message = self._validate_size(size)
         if not valid:
-            return (blank_tensor, "", error_message)
+            raise Exception(error_message)
 
         base_url = self._get_base_url(api_source, custom_api_url)
         pbar = comfy.utils.ProgressBar(100)
@@ -422,11 +421,11 @@ class JiangeGPTImage2Official4KNode:
             )
             result = response.json()
             if "data" not in result or not result["data"]:
-                return (blank_tensor, "", f"返回中没有图片数据: {result}")
+                raise Exception(f"返回中没有图片数据: {result}")
             data_array = result.get("data", [])
             tensors, first_url = self._items_to_tensors(data_array, max_retries, initial_timeout)
             if not tensors:
-                return (blank_tensor, "", "未能解析返回图片")
+                raise Exception("未能解析返回图片")
             combined = torch.cat(tensors, dim=0)
             info = self._build_info(
                 api_source, prompt, aspect_ratio, resolution, size, quality,
@@ -435,7 +434,7 @@ class JiangeGPTImage2Official4KNode:
             )
             return (combined, first_url, info)
         except Exception as e:
-            return (blank_tensor, "", f"执行失败: {str(e)}")
+            raise
 
 
 NODE_CLASS_MAPPINGS = {

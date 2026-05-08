@@ -61,7 +61,7 @@ class JiangeGPTSmartChatNode:
                 "🖼️ 参考图2": ("IMAGE",),
                 "🖼️ 参考图3": ("IMAGE",),
                 "🖼️ 参考图4": ("IMAGE",),
-                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 4}),
+                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
                 "🌡️ 温度": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
                 "🎲 Top_P": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "📝 最大令牌": ("INT", {"default": 4096, "min": 1, "max": 65536}),

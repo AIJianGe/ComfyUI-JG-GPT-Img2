@@ -59,7 +59,6 @@ class JiangeGPTImage2Node:
                     "multiline": False,
                     "placeholder": "输入 API Key"
                 }),
-                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
                 "🤖 模型": (["gpt-image-2"], {"default": "gpt-image-2"}),
                 "🎨 画质": (["auto", "high", "medium", "low"], {"default": "auto"}),
                 "📐 尺寸": ([
@@ -70,9 +69,9 @@ class JiangeGPTImage2Node:
                     "1248x832", "832x1248",
                     "1120x896", "896x1120",
                     "1456x624", "624x1456",
+                    "1920x1088", "1088x1920",
                     "2048x1024", "1024x2048",
                     "2048x2048",
-                    "1920x1080", "1080x1920",
                     "2560x1440", "1440x2560",
                     "2304x1728", "1728x2304",
                     "2496x1664", "1664x2496",
@@ -100,6 +99,7 @@ class JiangeGPTImage2Node:
                     "max": 1200,
                     "step": 10
                 }),
+                "🖼️ 参考图数量": ("INT", {"default": 1, "min": 1, "max": 20}),
             },
             "optional": {
                 "🆔 任务ID": ("STRING", {"default": ""}),
@@ -220,8 +220,13 @@ class JiangeGPTImage2Node:
         }
 
     def _blank_result(self, message, task_id=""):
-        blank_image = Image.new("RGB", (1024, 1024), color="white")
-        return (pil2tensor(blank_image), "", task_id, json.dumps(message, ensure_ascii=False))
+        if isinstance(message, dict):
+            msg = message.get("message", json.dumps(message, ensure_ascii=False))
+        else:
+            msg = str(message)
+        if task_id:
+            msg = f"[任务ID: {task_id}] {msg}"
+        raise Exception(msg)
 
     def _extract_status_and_data(self, result):
         status = result.get("status", "unknown") if isinstance(result, dict) else "unknown"
