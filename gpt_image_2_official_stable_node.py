@@ -150,7 +150,7 @@ class JiangeGPTImage2OfficialStableNode:
     RETURN_TYPES = ("IMAGE", "STRING", "STRING")
     RETURN_NAMES = ("🖼️ 参考图", "🔗 图片链接", "📋 响应信息")
     FUNCTION = "generate"
-    CATEGORY = "🤖GPT-Image-2"
+    CATEGORY = "AI剑歌/🤖GPT-Image-2"
     DESCRIPTION = "GPT Image 2 官方稳定版 @AI剑歌"
 
     def __init__(self):

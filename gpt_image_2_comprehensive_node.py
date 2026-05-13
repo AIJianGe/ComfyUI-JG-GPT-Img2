@@ -118,7 +118,7 @@ class JiangeGPTImage2ComprehensiveNode:
     RETURN_TYPES = ("IMAGE", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("🖼️ 参考图", "📋 响应信息", "🔗 图片链接", "💬 对话记录")
     FUNCTION = "process"
-    CATEGORY = "🤖GPT-Image-2"
+    CATEGORY = "AI剑歌/🤖GPT-Image-2"
     DESCRIPTION = "GPT Image 2 综合版 @AI剑歌"
 
     def __init__(self):

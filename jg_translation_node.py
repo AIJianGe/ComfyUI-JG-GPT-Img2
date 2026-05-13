@@ -32,7 +32,7 @@ class JiangePromptTranslationNode:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("output_text",)
     FUNCTION = "process"
-    CATEGORY = "🤖GPT-Image-2"
+    CATEGORY = "AI剑歌/🤖GPT-Image-2"
     DESCRIPTION = "翻译和优化提示词 @AI剑歌"
     
     def __init__(self):
@@ -102,7 +102,7 @@ class JiangeConfigNode:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("config_status",)
     FUNCTION = "show_config"
-    CATEGORY = "🤖GPT-Image-2"
+    CATEGORY = "AI剑歌/🤖GPT-Image-2"
     DESCRIPTION = "配置管理 @AI剑歌"
     
     def __init__(self):

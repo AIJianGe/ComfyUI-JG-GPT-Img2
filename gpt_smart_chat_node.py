@@ -76,7 +76,7 @@ class JiangeGPTSmartChatNode:
     RETURN_TYPES = ("STRING", "STRING", "STRING")
     RETURN_NAMES = ("💭 AI回复", "📄 完整响应", "ℹ️ 处理信息")
     FUNCTION = "chat"
-    CATEGORY = "🤖GPT-Image-2"
+    CATEGORY = "AI剑歌/🤖GPT-Image-2"
     DESCRIPTION = "GPT 智能对话 @AI剑歌"
     OUTPUT_NODE = False
 
